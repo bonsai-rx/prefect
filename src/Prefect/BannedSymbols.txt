@@ -1,0 +1,25 @@
+M:System.IO.DirectoryInfo.EnumerateDirectories();Use an explicit options overload
+M:System.IO.DirectoryInfo.EnumerateDirectories(System.String);Use an explicit options overload
+M:System.IO.DirectoryInfo.EnumerateFiles();Use an explicit options overload
+M:System.IO.DirectoryInfo.EnumerateFiles(System.String);Use an explicit options overload
+M:System.IO.DirectoryInfo.EnumerateFileSystemInfos();Use an explicit options overload
+M:System.IO.DirectoryInfo.EnumerateFileSystemInfos(System.String);Use an explicit options overload
+M:System.IO.DirectoryInfo.GetDirectories();Use an explicit options overload
+M:System.IO.DirectoryInfo.GetDirectories(System.String);Use an explicit options overload
+M:System.IO.DirectoryInfo.GetFiles();Use an explicit options overload
+M:System.IO.DirectoryInfo.GetFiles(System.String);Use an explicit options overload
+M:System.IO.DirectoryInfo.GetFileSystemInfos();Use an explicit options overload
+M:System.IO.DirectoryInfo.GetFileSystemInfos(System.String);Use an explicit options overload
+
+M:System.IO.Directory.EnumerateDirectories(System.String);Use an explicit options overload
+M:System.IO.Directory.EnumerateDirectories(System.String,System.String);Use an explicit options overload
+M:System.IO.Directory.EnumerateFiles(System.String);Use an explicit options overload
+M:System.IO.Directory.EnumerateFiles(System.String,System.String);Use an explicit options overload
+M:System.IO.Directory.EnumerateFileSystemInfos(System.String);Use an explicit options overload
+M:System.IO.Directory.EnumerateFileSystemInfos(System.String,System.String);Use an explicit options overload
+M:System.IO.Directory.GetDirectories(System.String);Use an explicit options overload
+M:System.IO.Directory.GetDirectories(System.String,System.String);Use an explicit options overload
+M:System.IO.Directory.GetFiles(System.String);Use an explicit options overload
+M:System.IO.Directory.GetFiles(System.String,System.String);Use an explicit options overload
+M:System.IO.Directory.GetFileSystemInfos(System.String);Use an explicit options overload
+M:System.IO.Directory.GetFileSystemInfos(System.String,System.String);Use an explicit options overload

@@ -1,0 +1,5 @@
+.github/workflows/$PROJECT$.yml
+docs/docfx.json
+docs/template/public/main.js
+docs/README.md
+build/Package.props

@@ -1,0 +1,46 @@
+# Prefer readme in docs folder for easier sharing with docfx.
+README.md
+
+# Prefer to use GitHub default community health files
+# https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+FUNDING.yml
+GOVERNANCE.md
+SECURITY.md
+SUPPORT.md
+
+# Legacy files/locations
+src/.editorconfig
+src/Directory.Build.props
+src/Directory.Build.targets
+src/Directory.Build.rsp
+src/Directory.Packages.props
+src/icon.png
+icon.png
+.hgignore
+build/Bonsai.props
+build/Common.props
+build/Version.props
+Externals
+
+# Old docs conventions
+docs/.gitignore
+docs/api/.gitignore
+docs/favicon.ico
+docs/logo.svg
+docs/assets/favicon.ico
+docs/assets/logo.svg
+docs/templates/html/styles/main.css
+docs/templates/html/styles/main.js
+docs/template/main.css
+docs/template/main.js
+
+# Old workflows
+.github/workflows/docs.yml
+.github/workflows/build.yml
+.github/workflows/test.yml
+.github/workflows/dotnet.yml
+
+# The rules that used to live here are part of the main .gitignore now
+.bonsai/.gitibnore
