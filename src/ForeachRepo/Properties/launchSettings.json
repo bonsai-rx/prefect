@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ForeachRepo": {
+      "commandName": "Project",
+      "commandLineArgs": "bonsai-rx-all --include=spinnaker list-unstaged",
+      "workingDirectory": "C:\\Projects\\NeuroGEARS\\CommonCiProject\\"
+    }
+  }
+}
