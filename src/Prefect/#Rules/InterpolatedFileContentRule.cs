@@ -56,7 +56,7 @@ internal sealed partial class InterpolatedFileContentRule : FileExistsRule
 
         string actualContents;
         using (StreamReader f = new(File.OpenRead(fullFilePath)))
-            actualContents = f.ReadToEnd();
+            actualContents = f.ReadToEnd().ReplaceLineEndings("\n");
 
         StringBuilder errors = new();
         string? expectedContents = GetInterpolatedContent(repo, errors);

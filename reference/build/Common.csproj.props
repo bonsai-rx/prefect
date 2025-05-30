@@ -31,26 +31,24 @@
 
   <!-- Universal NuGet Package Properties -->
   <PropertyGroup>
-    <Authors>Bonsai Foundation</Authors>
-    <Copyright>Copyright © Bonsai Foundation CIC and Contributors</Copyright>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageType>Dependency;BonsaiLibrary</PackageType>
 
     <PackageIcon>icon.png</PackageIcon>
-    <PackageIconSourcePath>$(MSBuildthisFileDirectory)icon.png</PackageIconSourcePath>
+    <PackageIconSourcePath>$(MSBuildThisFileDirectory)icon.png</PackageIconSourcePath>
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageLicenseSourcePath>$(MSBuildthisFileDirectory)../LICENSE</PackageLicenseSourcePath>
+    <PackageLicenseSourcePath>$(MSBuildThisFileDirectory)../LICENSE</PackageLicenseSourcePath>
 
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReadmeSourcePath>$(MSBuildthisFileDirectory)../docs/README.md</PackageReadmeSourcePath>
-    <PackageReadmeSourcePath Condition="Exists('$(MSBuildthisFileDirectory)README.nuget.md')">$(MSBuildthisFileDirectory)README.nuget.md</PackageReadmeSourcePath>
+    <PackageReadmeSourcePath>$(MSBuildThisFileDirectory)../docs/README.md</PackageReadmeSourcePath>
+    <PackageReadmeSourcePath Condition="Exists('$(MSBuildThisFileDirectory)README.nuget.md')">$(MSBuildThisFileDirectory)README.nuget.md</PackageReadmeSourcePath>
     <PackageReadmeSourcePath Condition="Exists('$(MSBuildProjectDirectory)\README.md')">$(MSBuildProjectDirectory)\README.md</PackageReadmeSourcePath>
     <PackageReadmeSourcePath Condition="Exists('$(MSBuildProjectDirectory)\README.nuget.md')">$(MSBuildProjectDirectory)\README.nuget.md</PackageReadmeSourcePath>
 
     <!-- Emit modern symbol packages -->
-    <IncludeSymbols>true</IncludeSymbols>
-    <IncludeSymbols Condition="'$(Configuration)' != 'Release'">false</IncludeSymbols>
+    <IncludeSymbols>false</IncludeSymbols>
+    <IncludeSymbols Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
     <!-- Embed untracked sources in the PDB for Source Link when building from CI -->
@@ -75,16 +73,6 @@
     <!-- Provide Bonsai executable path for use with launchSettings.json -->
     <BonsaiExecutablePath>$(MSBuildThisFileDirectory)../.bonsai/Bonsai.exe</BonsaiExecutablePath>
   </PropertyGroup>
-
-  <!-- Automatically enable banned API analyzer -->
-  <ItemGroup>
-    <AdditionalFiles Include="BannedSymbols.txt" Condition="Exists('BannedSymbols.txt')" Visible="false" />
-    <AdditionalFiles Include="$(ProjectDir)BannedSymbols.txt" Condition="Exists('$(ProjectDir)BannedSymbols.txt')" />
-    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
 
   <Import Project="Project.csproj.props" Condition="Exists('Project.csproj.props')" />
   <Import Project="Package.props" />

@@ -13,13 +13,12 @@
     <ToolCommandName Condition="'$(ToolCommandName)' == ''">$(TargetName.ToLowerInvariant())</ToolCommandName>
     <PackageType>DotnetTool</PackageType>
 
-    <!-- Undo enabling documentation file (Microsoft.NET.Sdk.BeforeCommon.targets handles enabling it so it's too late to just disable too boolean.) -->
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <DocumentationFile></DocumentationFile>
+    <!--
+      Disable warnings relating to missing documentation
+      (It's actually too late to easily disable documentation file generation outright, Microsoft.NET.Sdk.BeforeCommon.targets already reacted to it being enabled.)
+    -->
+    <NoWarn>1591,1573</NoWarn>
   </PropertyGroup>
-  <ItemGroup Condition="'$(PackAsTool)' == 'true'">
-    <ProjectCapability Remove="GenerateDocumentationFile" />
-  </ItemGroup>
 
   <Import Project="Project.csproj.targets" Condition="Exists('Project.csproj.targets')" />
 

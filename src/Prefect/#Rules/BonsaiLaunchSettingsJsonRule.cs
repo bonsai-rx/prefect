@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace Prefect;
 
@@ -31,6 +33,17 @@ internal sealed class BonsaiLaunchSettingsJsonRule : Rule
         {
             if (projectFilePath.EndsWith(".Tests.csproj", StringComparison.OrdinalIgnoreCase))
                 continue;
+
+            // Tools should not have launchSettings.json
+            {
+                // Make everything lowercase so we can do a case-insensitive matches
+                // (Unfortunately System.Xml.XPath doesn't support just turning off case sensitivity.)
+                string rawXml = File.ReadAllText(projectFilePath).ToLowerInvariant();
+                XDocument xml = XDocument.Parse(rawXml);
+                XElement? packAsTool = xml.XPathSelectElement("/Project/PropertyGroup/PackAsTool".ToLowerInvariant());
+                if (packAsTool?.Value == "true")
+                    continue;
+            }
 
             yield return Path.Combine(Path.GetDirectoryName(projectFilePath)!, "Properties", "launchSettings.json");
         }
