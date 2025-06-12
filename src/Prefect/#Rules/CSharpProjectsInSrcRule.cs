@@ -20,6 +20,9 @@ internal sealed class CSharpProjectsInSrcRule : Rule
             if (csprojPath.EndsWith(".Tests.csproj") && relativeToSrc.StartsWith("../tests/"))
                 continue;
 
+            if (Path.GetFileName(csprojPath) == "Extensions.csproj")
+                continue;
+
             if (relativeToSrc.StartsWith(".."))
                 errors.AppendLine($"'{Path.GetRelativePath(repo.RootPath, csprojPath)}' is not within the 'src' directory.");
         }

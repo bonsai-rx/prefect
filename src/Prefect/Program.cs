@@ -40,7 +40,7 @@ using (StreamWriter f = new("definitely-correct.txt"))
 
 Console.WriteLine();
 
-bool enableAutomaticFixes = !true;
+bool enableAutomaticFixes = true;
 
 #if BONSAI_MODE
 var repos = Directory.EnumerateDirectories(@"C:\Projects\NeuroGEARS\CommonCiProject\bonsai-rx-all\", "*", SearchOption.TopDirectoryOnly);
@@ -138,7 +138,7 @@ foreach (string repoPath in repos)
     continue;
 #endif
 
-        ConsoleColor oldColor = Console.ForegroundColor;
+    ConsoleColor oldColor = Console.ForegroundColor;
     Console.ForegroundColor = ConsoleColor.White;
     Console.Write($"Validating '{Path.GetFileName(repoPath)}' ({repo.ProjectName})...");
 
@@ -184,7 +184,7 @@ foreach (string repoPath in repos)
     }
 #if !INTERACTIVE
     else
-    { console.WriteLine(); }
+    { Console.WriteLine(); }
 #else
     else if (!hadUnfixableErrors && !isAutomaticRerun)
     {
@@ -215,8 +215,8 @@ foreach (string repoPath in repos)
                 return;
             }
         }
-#endif
     }
+#endif
 }
 
 bool ShouldSkip(Rule rule, Repo repo)

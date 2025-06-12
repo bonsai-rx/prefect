@@ -103,6 +103,9 @@ internal sealed class CSharpProjectValidationRule : Rule
             string projectName = Path.GetFileNameWithoutExtension(projectFilePath);
             bool isTestProject = projectName.EndsWith(".Tests");
 
+            if (projectName == "Extensions")
+                continue;
+
             // Make everything lowercase so we can do a case-insensitive matches
             // (Unfortunately System.Xml.XPath doesn't support just turning off case sensitivity.)
             string rawXml = File.ReadAllText(projectFilePath).ToLowerInvariant();

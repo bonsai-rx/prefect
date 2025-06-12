@@ -15,7 +15,7 @@ name: $PROJECT$
 on:
   push:
     # This prevents tag pushes from triggering this workflow
-    branches: ['*']
+    branches: ['**']
   pull_request:
   release:
     types: [published]
@@ -337,8 +337,8 @@ jobs:
         with:
           path: '.'
 
-      # ----------------------------------------------------------------------- Publish to GitHub Pages (for forks)
-      - name: Publish to GitHub Pages (forks)
+      # ----------------------------------------------------------------------- Publish to GitHub Pages
+      - name: Publish to GitHub Pages
         id: publish
         if: github.event_name == 'release' || github.event.repository.fork
         uses: actions/deploy-pages@v4

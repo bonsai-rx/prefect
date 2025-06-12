@@ -37,7 +37,8 @@ internal sealed class BonsaiFoundationPackageMetadataRule : Rule
         // Validate per-project package metadata
         foreach (string projectFilePath in repo.EnumerateFiles("*.csproj"))
         {
-            if (Path.GetFileNameWithoutExtension(projectFilePath).EndsWith(".Tests"))
+            string projectName = Path.GetFileNameWithoutExtension(projectFilePath);
+            if (projectName.EndsWith(".Tests") || projectName == "Extensions")
                 continue;
 
             string relativePath = Path.GetRelativePath(repo.RootPath, projectFilePath);
