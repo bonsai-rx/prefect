@@ -15,9 +15,9 @@ internal sealed class ModernDotNetGitignoreRule : FileExistsRule
         @".vs/",
         @"/artifacts/",
         // Bonsai environments
-        @".bonsai/Settings/",
-        @".bonsai/Packages/",
-        @".bonsai/Bonsai.exe*",
+        @"**/.bonsai/Settings/",
+        @"**/.bonsai/Packages/",
+        @"**/.bonsai/Bonsai.exe*",
     ];
 
     private static readonly ImmutableHashSet<string> ForbiddenPatterns =
@@ -42,6 +42,11 @@ internal sealed class ModernDotNetGitignoreRule : FileExistsRule
         @"*.dll",
         @"*.exe.settings",
         @"*.exe.*",
+
+        // Erroneous rules that got spread by mistake
+        @".bonsai/Settings/",
+        @".bonsai/Packages/",
+        @".bonsai/Bonsai.exe*",
     ];
 
     public ModernDotNetGitignoreRule()
@@ -66,7 +71,7 @@ internal sealed class ModernDotNetGitignoreRule : FileExistsRule
         }
 
         foreach (string pattern in missingPatterns)
-            errors.Append($"\n    Pattern '{pattern}' was expeted but not found.");
+            errors.Append($"\n    Pattern '{pattern}' was expected but not found.");
 
         return errors.Length > 0 ? $"'{relativeFilePath}' does not meet the standard for modern .NET projects:{errors}" : null;
     }
