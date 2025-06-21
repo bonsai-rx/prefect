@@ -7,8 +7,6 @@ using System.Xml.XPath;
 
 namespace Prefect;
 
-//TODO: This is maybe slightly overly-aggressive, maybe we should only check for a profile named "Bonsai"?
-// Do we need to more accurately detect non-Bonsai package projects? (Right now we just filter out tests.)
 internal sealed class BonsaiLaunchSettingsJsonRule : Rule
 {
     public override string Description => "All 'launchSettings.json' files have the expected content.";
@@ -31,10 +29,15 @@ internal sealed class BonsaiLaunchSettingsJsonRule : Rule
     {
         foreach (string projectFilePath in repo.EnumerateFiles("*.csproj"))
         {
+            // Don't care about tests
             if (projectFilePath.EndsWith(".Tests.csproj", StringComparison.OrdinalIgnoreCase))
                 continue;
 
-            // Tools should not have launchSettings.json
+            // Don't care about Extensions.csproj
+            if (Path.GetFileName(projectFilePath).Equals("Extensions.csproj", StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            // Don't care about .NET tools
             {
                 // Make everything lowercase so we can do a case-insensitive matches
                 // (Unfortunately System.Xml.XPath doesn't support just turning off case sensitivity.)
