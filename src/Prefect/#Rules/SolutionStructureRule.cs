@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Prefect;
+
 internal sealed class SolutionStructureRule : Rule
 {
     public override string Description => "Solution reflects the contents of the repository.";
@@ -60,6 +61,10 @@ internal sealed class SolutionStructureRule : Rule
         foreach (string projectPath in repo.EnumerateFiles("*.csproj", SearchOption.AllDirectories).Concat(repo.EnumerateFiles("*.vcxproj", SearchOption.AllDirectories)))
         {
             string projectFileName = Path.GetFileName(projectPath);
+
+            if (projectFileName.Equals("Extensions.csproj", StringComparison.OrdinalIgnoreCase))
+                continue;
+
             if (!expectedProjects.TryAdd(projectFileName, Path.GetRelativePath(repo.RootPath, projectPath)))
                 Error($"Repo contains more than one project named '{projectFileName}'", fatal: true);
         }
