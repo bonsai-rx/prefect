@@ -6,21 +6,24 @@ using System.Text.RegularExpressions;
 
 namespace Prefect;
 
-internal sealed partial class BonsaiFoundationLicenseRule : FileExistsRule
+internal sealed partial class MitLicenseRule : FileExistsRule
 {
     public override string Description => $"{RelativePath} contains the appropriate license";
-    private EnforcementLevel StrictEnfocement => EnforcementLevel.StrictFormatting;
+    private EnforcementLevel StrictEnforcement;
 
-    private enum EnforcementLevel
+    public enum EnforcementLevel
     {
+        /// <summary>License must be MIT, don't check copyright string or exact formatting.</summary>
         MustBeMitLicense,
+        /// <summary>License must be MIT and copyright Bonsai Foundation, don't check copyright year or exact formatting.</summary>
         MustBeBonsaiFoundation,
+        /// <summary>License must match the standard Bonsai Foundation license exactly, excluding any third-party notices.</summary>
         StrictFormatting,
     }
 
-    public BonsaiFoundationLicenseRule()
+    public MitLicenseRule(EnforcementLevel enforcementLevel = EnforcementLevel.StrictFormatting)
         : base("LICENSE", null)
-    { }
+        => StrictEnforcement = enforcementLevel;
 
     protected override string? Validate(Repo repo, string fullFilePath, string relativeFilePath)
     {
@@ -29,7 +32,7 @@ internal sealed partial class BonsaiFoundationLicenseRule : FileExistsRule
 
         string actualContent = File.ReadAllText(fullFilePath);
 
-        if (StrictEnfocement >= EnforcementLevel.StrictFormatting)
+        if (StrictEnforcement >= EnforcementLevel.StrictFormatting)
         {
             actualContent = actualContent.ReplaceLineEndings("\n");
 
@@ -57,7 +60,7 @@ internal sealed partial class BonsaiFoundationLicenseRule : FileExistsRule
             if (!match.Success)
                 return $"License file '{relativeFilePath}' does not appear to be an MIT license.";
 
-            if (StrictEnfocement >= EnforcementLevel.MustBeBonsaiFoundation)
+            if (StrictEnforcement >= EnforcementLevel.MustBeBonsaiFoundation)
             {
                 Debug.Assert(match.Index == 0 && match.Length == actualContent.Length);
 

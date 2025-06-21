@@ -222,7 +222,7 @@ foreach (string repoPath in repos)
 bool ShouldSkip(Rule rule, Repo repo)
 {
     // These packages are BSD2 and GPLv3 respectively
-    if (repo.RepoSlug is "tld" or "cmt" && rule is BonsaiFoundationLicenseRule)
+    if (repo.RepoSlug is "tld" or "cmt" && rule is MitLicenseRule)
         return true;
 
     return false;

@@ -42,7 +42,7 @@ internal sealed class Ruleset
         {
             case TemplateKind.BonsaiFoundation:
             {
-                rules.Add(new BonsaiFoundationLicenseRule());
+                rules.Add(new MitLicenseRule());
                 rules.Add(new BonsaiFoundationPackageMetadataRule());
                 rules.Add(new CSharpProjectsInSrcRule());
                 rules.Add(new CSharpProjectValidationRule());
