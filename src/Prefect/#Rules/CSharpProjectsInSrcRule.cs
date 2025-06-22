@@ -16,7 +16,9 @@ internal sealed class CSharpProjectsInSrcRule : Rule
         {
             string relativeToSrc = PathEx.GetNormalRelativeTo(srcDirectoryPath, csprojPath);
 
-            //TODO: bonsai-rx/machinelearning has this strucutre, maybe worth considering letting it be legal.
+            // Right now this exception exists primarily for bonsai-rx/machinelearning
+            // Need to decide if this is something we want to actually allow/encourage
+            // https://github.com/bonsai-rx/prefect/issues/14
             if (csprojPath.EndsWith(".Tests.csproj") && relativeToSrc.StartsWith("../tests/"))
                 continue;
 

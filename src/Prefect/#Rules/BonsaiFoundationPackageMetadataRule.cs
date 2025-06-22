@@ -64,8 +64,8 @@ internal sealed class BonsaiFoundationPackageMetadataRule : Rule
 
             string bonsaiPrefix = "Bonsai - ";
 
-            //TODO: Does this really make sense?
-            // Should tools even have titles and descriptions? I don't think either show up in any common place people use to interact with .NET tools
+            //TODO: It might make more sense to actually just ignore both Title and Description for tools since
+            // I don't think either show up in any common place people use to interact with .NET tools
             if (xml.XPathSelectElement("/Project/PropertyGroup/PackAsTool")?.Value == "true")
                 bonsaiPrefix = "Bonsai ";
 
