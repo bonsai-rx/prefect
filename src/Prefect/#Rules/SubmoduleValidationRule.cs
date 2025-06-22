@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Prefect;
 
+//TODO: Redo this using libgit2 now that we have it as a dependency
+// With it we should also be able to automatically update submodules to use the appropriate revision
+// Unfortunately LibGit2Sharp does not expose the functionality required to add new submodules, so we won't be able to do that for fresh repos.
 internal sealed class SubmoduleValidationRule : Rule
 {
     public override string Description => $"Verify submodule usage";
