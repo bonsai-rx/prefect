@@ -14,7 +14,6 @@ internal sealed class CSharpProjectValidationRule : Rule
     [
         // Slightly aggressive checks that mostly exist for tidying, could be removed
         "IsPackable",
-        "Nullable",
         "ToolCommandName",
 
         // Misc things that generally should not be specified per-project
