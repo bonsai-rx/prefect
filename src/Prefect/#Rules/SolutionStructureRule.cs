@@ -31,14 +31,21 @@ internal sealed class SolutionStructureRule : Rule
 
         string relativeSolutionPath = $"{repo.ProjectName}.sln";
         string solutionPath = Path.Combine(repo.RootPath, relativeSolutionPath);
+
         if (!File.Exists(solutionPath))
-            return (Result.ValidationFailed, $"Could not open solution '{relativeSolutionPath}'");
+        {
+            if (!applyFix)
+                return (Result.ValidationFailed, $"Solution '{relativeSolutionPath}' does not exist.");
+
+            CreateNewSolution(solutionPath);
+        }
 
         ISolutionSerializer? serializer = SolutionSerializers.GetSerializerByMoniker(solutionPath);
         if (serializer is null)
             return (Result.ValidationFailed, $"Could not initialize solution seiralizer for '{relativeSolutionPath}'");
 
         SolutionModel solution = await serializer.OpenAsync(solutionPath, CancellationToken.None);
+
         StringBuilder _errors = new();
         bool canFixAutomatically = true;
 
@@ -251,5 +258,26 @@ internal sealed class SolutionStructureRule : Rule
         ValidationPassed,
         ValidationFailed,
         FixesApplied,
+    }
+
+    private static void CreateNewSolution(string solutionPath)
+    {
+        using StreamWriter writer = new(solutionPath, append: false, Encoding.UTF8);
+
+        // Classic solutions *always* use CRLF and tab indentation, even on Linux
+        writer.Write("\r\n");
+        writer.Write("Microsoft Visual Studio Solution File, Format Version 12.00\r\n");
+        writer.Write("# Visual Studio Version 17\r\n");
+        writer.Write("VisualStudioVersion = 17.0.31903.59\r\n");
+        writer.Write("MinimumVisualStudioVersion = 10.0.40219.1\r\n");
+        writer.Write("Global\r\n");
+        writer.Write("\tGlobalSection(SolutionProperties) = preSolution\r\n");
+        writer.Write("\t\tHideSolutionNode = FALSE\r\n");
+        writer.Write("\tEndGlobalSection\r\n");
+        writer.Write("\tGlobalSection(ExtensibilityGlobals) = postSolution\r\n");
+        writer.Write($"\t\tSolutionGuid = {Guid.NewGuid().ToString("B").ToUpperInvariant()}\r\n");
+        writer.Write("\tEndGlobalSection\r\n");
+        writer.Write("EndGlobal\r\n");
+        writer.Write("\r\n");
     }
 }

@@ -1,3 +1,4 @@
+.bonsai/Bonsai.config
 build/icon.png
 build/Package.props
 build/Project.csproj.props
@@ -5,4 +6,4 @@ build/Project.csproj.targets
 docs/index.md
 docs/README.md
 docs/toc.yml
-.bonsai/Bonsai.config
+src/$PROJECT$/$PROJECT$.csproj
