@@ -243,24 +243,9 @@ List<string> validationSet = new();
         // Repo arguments must be normalized full paths
         Debug.Assert(repoArgument == Path.GetFullPath(repoArgument));
 
-        // It's very intentional that Prefect only tries to validate directories identifiable as Git repositories
-        // Running Prefect is generally a destructive operation, and we don't want people using it in a context
-        // where they might be bothered by things getting overwritten or deleted, especially by mistake.
-        //
-        // For example, if somene accidentally ran something like `prefect my-template / --auto-fix`
-        // We would definitely not want it to recurse though the entire system deleting all the .hgignore files it finds because there's a rule deeming them legacy.
-        // Although unlike Git, we probably don't want to recurse up.
-        bool IsRepository(string path)
-        {
-            //TODO: It could make sense to use the same criteria here as Git itself to avoid accidental operation within a hollowed-out Git repo
-            // https://github.com/git/git/blob/cb3b40381e1d5ee32dde96521ad7cfd68eb308a6/setup.c#L418
-            string gitPath = Path.Combine(path, ".git");
-            return Directory.Exists(gitPath) || File.Exists(gitPath);
-        }
-
         // Handle single Git repo case
-        // Do not defeat this check for the same reason outlined above
-        if (IsRepository(repoArgument))
+        // Do not disable this check, see remarks on IsRepository
+        if (Repo.IsRepository(repoArgument))
         {
             validationSet.Add(repoArgument);
             continue;
@@ -270,8 +255,8 @@ List<string> validationSet = new();
         int added = 0;
         foreach (string nestedRepoPath in Directory.EnumerateDirectories(repoArgument, "*", SearchOption.TopDirectoryOnly))
         {
-            // Do not defeat this check for the same reason outlined above
-            if (!IsRepository(nestedRepoPath))
+            // Do not disable this check, see remarks on IsRepository
+            if (!Repo.IsRepository(nestedRepoPath))
                 continue;
 
             validationSet.Add(nestedRepoPath);
