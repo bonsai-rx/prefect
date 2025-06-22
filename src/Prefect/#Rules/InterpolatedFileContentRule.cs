@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Prefect;
 
-internal sealed partial class InterpolatedFileContentRule : FileExistsRule
+internal sealed class InterpolatedFileContentRule : FileExistsRule
 {
     public string Template { get; }
     public override string Description => $"File '{RelativePath}' has expected dynamic contents";
@@ -20,28 +19,19 @@ internal sealed partial class InterpolatedFileContentRule : FileExistsRule
         Template = f.ReadToEnd().ReplaceLineEndings("\n");
     }
 
-    [GeneratedRegex(@"\$(?<variable>[A-Za-z0-9_\-]+)\$")]
-    private static partial Regex VariableRegex();
-
     private string? GetInterpolatedContent(Repo repo, StringBuilder errors)
     {
         bool hasErrors = false;
-        string result = VariableRegex().Replace(Template, (match) =>
-        {
-            ReadOnlySpan<char> variable = match.Groups["variable"].ValueSpan;
-            switch (variable)
+        string result = repo.EvaluateTemplate
+        (
+            Template,
+            (variable) =>
             {
-                //TODO: Unify this with the logic for file names
-                case "PROJECT":
-                    return repo.ProjectName;
-                case "REPO-SLUG":
-                    return repo.RepoSlug;
-                default:
-                    errors.AppendLine($"Template '{RelativePath}' contains unknown variable '{variable}'");
-                    hasErrors = true;
-                    return variable.ToString();
+                errors.AppendLine($"Template '{RelativePath}' contains unknown variable '{variable}'");
+                hasErrors = true;
+                return variable.ToString();
             }
-        });
+        );
 
         return hasErrors ? null : result;
     }

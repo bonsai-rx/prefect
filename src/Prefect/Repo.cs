@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Enumeration;
+using System.Text.RegularExpressions;
 using GitRepository = LibGit2Sharp.Repository;
 
 namespace Prefect;
 
-internal sealed class Repo
+internal sealed partial class Repo
 {
     public string RootPath { get; }
     public string RepoSlug { get; }
@@ -37,8 +38,32 @@ internal sealed class Repo
         HasValidProjectName = projectName is not null;
     }
 
+    [GeneratedRegex(@"\$(?<variable>[A-Za-z0-9_\-]+)\$")]
+    private static partial Regex VariableRegex();
+
+    public string? EvaluateInterpolationHole(ReadOnlySpan<char> variableName)
+        => variableName switch
+        {
+            "PROJECT" => ProjectName,
+            "REPO-SLUG" => RepoSlug,
+            _ => null,
+        };
+
+    public delegate string UnknownVariableFallback(ReadOnlySpan<char> variable);
+    public string EvaluateTemplate(string template, UnknownVariableFallback unknownVariableFallback)
+        => VariableRegex().Replace
+        (
+            template,
+            (match) => match.Groups["variable"].ValueSpan switch
+            {
+                "PROJECT" => ProjectName,
+                "REPO-SLUG" => RepoSlug,
+                var unknownVariable => unknownVariableFallback(unknownVariable),
+            }
+        );
+
     public string GetRelativePath(string referencePath)
-        => referencePath.Replace("$PROJECT$", ProjectName);
+        => EvaluateTemplate(referencePath, variable => variable.ToString());
 
     public string GetFullPath(string relativeReferencePath, out string relativePath)
         => Path.Combine(RootPath, relativePath = GetRelativePath(relativeReferencePath));
