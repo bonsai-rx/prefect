@@ -157,4 +157,18 @@ internal sealed class Ruleset
 
         Rules = rules.ToImmutable();
     }
+
+    public bool ShouldSkip(Rule rule, Repo repo)
+    {
+        switch (Kind)
+        {
+            case TemplateKind.BonsaiFoundation:
+                // These packages are BSD2 and GPLv3 respectively
+                if (repo.RepoSlug is "tld" or "cmt" && rule is MitLicenseRule)
+                    return true;
+                break;
+        }
+
+        return false;
+    }
 }

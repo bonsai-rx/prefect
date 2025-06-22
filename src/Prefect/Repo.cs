@@ -11,12 +11,11 @@ internal sealed class Repo
     public string RepoSlug { get; }
     public bool HasValidProjectName { get; }
 
-    public Repo(string rootPath, TemplateKind kind)
+    public Repo(string rootPath, TemplateKind kind, string? projectName)
     {
         RootPath = rootPath;
         RepoSlug = Path.GetFileName(Path.TrimEndingDirectorySeparator(RootPath));
 
-        string? projectName = null;
         string mainSolutionFolder = kind != TemplateKind.HarpTech ? "" : "Interface";
         foreach (string solutionFile in EnumerateFiles(mainSolutionFolder, "*.sln", SearchOption.TopDirectoryOnly))
         {
