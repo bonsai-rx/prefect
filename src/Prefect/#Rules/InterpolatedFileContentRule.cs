@@ -105,7 +105,7 @@ internal sealed partial class InterpolatedFileContentRule : FileExistsRule
             return false;
 
         if (useCrlf)
-            newContents = newContents.ReplaceLineEndings("\r");
+            newContents = newContents.ReplaceLineEndings("\r\n");
 
         File.WriteAllText(fullFilePath, newContents);
         return true;
