@@ -31,6 +31,23 @@ internal sealed class BonsaiFoundationPackageMetadataRule : Rule
                 const string expectedCopyright = "Copyright © Bonsai Foundation CIC and Contributors";
                 if (xml.XPathSelectElement("/Project/PropertyGroup/Copyright")?.Value != expectedCopyright)
                     errors.AppendLine($"'{relativePath}': Copyright should be '{expectedCopyright}'");
+
+                // Require PackageRequireLicenseAcceptance when license isn't plain MIT
+                string licensePath = Path.Combine(repo.RootPath, "LICENSE");
+                if (File.Exists(licensePath))
+                {
+                    XElement? value = xml.XPathSelectElement("/Project/PropertyGroup/PackageRequireLicenseAcceptance");
+                    if (MitLicenseRule.IsPlainMitLicense(licensePath))
+                    {
+                        if (value is not null)
+                            errors.AppendLine($"'{relativePath}': PackageRequireLicenseAcceptance should not be specified on repos with licenses which are plain MIT");
+                    }
+                    else
+                    {
+                        if (value?.Value != "true")
+                            errors.AppendLine($"'{relativePath}': PackageRequireLicenseAcceptance should be enabled on repos with licenses which are not plain MIT");
+                    }
+                }
             }
         }
 

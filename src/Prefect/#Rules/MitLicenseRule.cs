@@ -91,7 +91,7 @@ internal sealed partial class MitLicenseRule : FileExistsRule
         // Ignore trialing whitespace
         @"\s*?" +
         // Ignore extra licenses concatenated to the main license (sometimes used for third-party dependencies)
-        @"(\s-{5,} .+)?" +
+        @"(?<thirdPartyLicenses>\s-{5,} .+)?" +
         // Must match entire file
         @"$"
     )]
@@ -125,4 +125,13 @@ internal sealed partial class MitLicenseRule : FileExistsRule
     protected override bool Fixup(Repo repo, string fullFilePath, string relativeFilePath)
         // Intentionally not implemented, this shouldn't be performed automatically!
         => false;
+
+    /// <summary>Returns true if the specified license text is a plain MIT license with no third-party notices attached.</summary>
+    public static bool IsPlainMitLicense(string licensePath)
+    {
+        string licenseText = File.ReadAllText(licensePath);
+        licenseText = licenseText.ReplaceLineEndings(" ");
+        Match match = ExpectedLicenseRegex().Match(licenseText);
+        return match.Success && !match.Groups["thirdPartyLicenses"].Success;
+    }
 }
