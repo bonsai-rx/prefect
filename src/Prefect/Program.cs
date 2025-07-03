@@ -15,24 +15,23 @@ if (Debugger.IsAttached)
 //-------------------------------------------------------------------------------------------------
 // Command line parsing
 //-------------------------------------------------------------------------------------------------
-Argument<string> templatePathArgument = new("reference-template")
+Argument<DirectoryInfo> templatePathArgument = ArgumentValidation.AcceptExistingOnly(
+    new Argument<DirectoryInfo>("reference-template")
 {
     Description = "Required path to the reference template to use for validation. (See detailed description below.)",
-    Arity = ArgumentArity.ExactlyOne
-};
+    Arity = ArgumentArity.ExactlyOne,
+});
 
-Argument<List<string>> repoArguments = new("repo")
+Argument<List<DirectoryInfo>> repoArguments = ArgumentValidation.AcceptExistingOnly(
+    new Argument<List<DirectoryInfo>>("repo")
 {
-    Description = "The repository or set of repositories to validate. Multiple can be specified.",
+    Description = "The repository or set of repositories to validate. Multiple can be specified. If the specified " +
+                  "path is a Git repository, then that single repository will be added to the validation set. If " +
+                  "the specified path is a non-Git directory, then each Git repository directly under it is added " +
+                  "to the validation set. Otherwise, if no repositories are specified, the list of configured " +
+                  "validation rules will be printed.",
     Arity = ArgumentArity.ZeroOrMore
-};
-
-Option<List<string>> skipOption = new("--skip")
-{
-    Description = "Indicates that the specified repository should be skipped, can be specified multiple times. " +
-                  "`repo` can be either the name of the repository's folder, the path to a repository, or the " +
-                  "repository's project name."
-};
+});
 
 Option<string> projectNameOption = new("--project-name")
 {
@@ -55,7 +54,6 @@ Option<bool> automaticFixesOption = new("--auto-fix")
 RootCommand rootCommand = new("Validate a set of repositories against a Prefect reference template.");
 rootCommand.Arguments.Add(templatePathArgument);
 rootCommand.Arguments.Add(repoArguments);
-rootCommand.Options.Add(skipOption);
 rootCommand.Options.Add(projectNameOption);
 rootCommand.Options.Add(interactiveOption);
 rootCommand.Options.Add(automaticFixesOption);
@@ -73,30 +71,19 @@ for (int i = 0; i < rootCommand.Options.Count; i++)
 //-------------------------------------------------------------------------------------------------
 rootCommand.SetAction(parseResult =>
 {
-    var templatePath = parseResult.GetValue(templatePathArgument);
+    var templateDirectory = parseResult.GetRequiredValue(templatePathArgument);
     var repositories = parseResult.GetValue(repoArguments);
     var projectNameOverride = parseResult.GetValue(projectNameOption);
     var enableAutomaticFixes = parseResult.GetValue(automaticFixesOption);
     var interactiveMode = parseResult.GetValue(interactiveOption);
 
-    if (templatePath is null)
-    {
-        Console.Error.WriteLine("No reference template was specified.");
-        return 1;
-    }
-    else if (!Directory.Exists(templatePath))
-    {
-        Console.Error.WriteLine($"The specified template path '{templatePath}' does not exist.");
-        return 1;
-    }
-
     // Load ruleset
-    Ruleset rules = new(templatePath);
+    Ruleset rules = new(templateDirectory.FullName);
 
     // Print ruleset when there's no repos to validate
     if (repositories is null || repositories.Count == 0)
     {
-        Console.WriteLine($"The following rules will be enforced by '{templatePath}':");
+        Console.WriteLine($"The following rules will be enforced by '{templateDirectory}':");
         foreach (Rule rule in rules)
             Console.WriteLine($"* {rule.Description}");
 
@@ -108,24 +95,9 @@ rootCommand.SetAction(parseResult =>
     {
         bool haveErrors = false;
 
-        foreach (string repoArgument in repositories)
+        foreach (DirectoryInfo repoDirectory in repositories)
         {
-            if (File.Exists(repoArgument))
-            {
-                Console.Error.WriteLine($"Path '{repoArgument}' points to a file, repository paths must be directories.");
-                haveErrors = true;
-                continue;
-            }
-
-            if (!Directory.Exists(repoArgument))
-            {
-                Console.Error.WriteLine($"Path '{repoArgument}' does not exist.");
-                haveErrors = true;
-                continue;
-            }
-
-            // Repo arguments must be normalized full paths
-            Debug.Assert(repoArgument == Path.GetFullPath(repoArgument));
+            var repoArgument = repoDirectory.FullName;
 
             // Handle single Git repo case
             // Do not disable this check, see remarks on IsRepository
