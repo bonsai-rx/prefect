@@ -60,11 +60,11 @@ An index of file paths which must not exist in the target, typically used for le
 File indices list one file path per line. Indentation and any trailing whitespace is automatically trimmed. Blank lines and lines beginning with `#` are ignored. Glob syntax is *not* supported.
 
 ### Interpolation
-The names of all files and the contents of files listed in `.prefect-interpolated-files` will be interpolated using the special $INTERPOLATION$ syntax.
+The names of all files and the contents of files listed in `.prefect-interpolated-files` will be interpolated using the special `$INTERPOLATION$` syntax.
 
 The following interpolations are supported:
-  * $PROJECT$ - The human-friendly name of a project (typically the package name.)
-  * $REPO-SLUG$ - The name of the repository, which is the name of the folder which contains it.
+  * `$PROJECT$` - The human-friendly name of a project (typically the package name.)
+  * `$REPO-SLUG$` - The name of the repository, which is the name of the folder which contains it.
 
 ### Project names
 The project name corresponding to a repository is inferred unless specified using `--project-name`. By default, the name of a project will be the name of the shortest-named `.sln` file in the root of the repository. When using a {nameof(TemplateKind.HarpTech)} template, the `Interface` directory is used instead of the root.
