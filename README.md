@@ -5,7 +5,6 @@ Everything here is still in rough prototype state, but these were the main tools
 * `src/Prefect` is a tool for enforcing a particular set of standards on a set of repos.
 * `reference` and `reference-harp` are the two reference trees for Bonsai and Harp respectively (not all rules are shown here tough, see `Ruleset.cs`)
 * `src/ForeachRepo` is a tool for running commands over a group of repos (with basic filtering and conditionals). EG: Run `ForeachRepo --exclude=machinelearning bonsai-rx git status` to print the status of every repo in the `bonsai-rx` folder, except for the Bonsai.ML repo. Has some handy built-in commands too.
-* `scripts/` - Various scripts for performing bulk actions and queries against Harp/Bonsai repos. Update `config.cmd` to change the target organization.
 
 ## Usage
 
