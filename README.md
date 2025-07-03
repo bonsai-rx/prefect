@@ -67,7 +67,7 @@ The following interpolations are supported:
   * `$REPO-SLUG$` - The name of the repository, which is the name of the folder which contains it.
 
 ### Project names
-The project name corresponding to a repository is inferred unless specified using `--project-name`. By default, the name of a project will be the name of the shortest-named `.sln` file in the root of the repository. When using a {nameof(TemplateKind.HarpTech)} template, the `Interface` directory is used instead of the root.
+The project name corresponding to a repository is inferred unless specified using `--project-name`. By default, the name of a project will be the name of the shortest-named `.sln` file in the root of the repository. When using a Harp template, the `Interface` directory is used instead of the root.
 
 ## Licensing
 
