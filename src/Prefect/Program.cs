@@ -36,8 +36,8 @@ Argument<List<DirectoryInfo>> repoArguments = ArgumentValidation.AcceptExistingO
 Option<string> projectNameOption = new("--project-name")
 {
     Description = "Overrides the project name instead of using automatic detection, cannot be used with sets of " +
-                   "multiple repositories. This flag is most useful when provisioning new repositories where the " +
-                   "automatic name detection has nothing to work with."
+                  "multiple repositories. This flag is most useful when provisioning new repositories where the " +
+                  "automatic name detection has nothing to work with."
 };
 
 Option<bool> interactiveOption = new("--interactive", "-i")

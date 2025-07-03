@@ -68,7 +68,7 @@ namespace Prefect
         Template configuration files:
             .prefect-template-kind
                 Contains a well-known template kind used to add additional programmatic rules to the rule set.
-                Supported values are: {String.Join(", ", Enum.GetValues<TemplateKind>().Where(x => x != TemplateKind.None).Select(x => x.ToString()))}
+                Supported values are: {string.Join(", ", Enum.GetValues<TemplateKind>().Where(x => x != TemplateKind.None).Select(x => x.ToString()))}
 
             .prefect-ignore-content
                 An index of file paths which are permitted to diverge in the target repo.
@@ -78,7 +78,7 @@ namespace Prefect
                 An index of file paths in the template which will have their contents interpolated before validation.
 
             .prefect-must-not-exist
-                An index of file paths which must not exist in the target, typically used for legacy files which are not longer desired.
+                An index of file paths which must not exist in the target, typically used for legacy files which are no longer desired.
 
         File index format:
             File indices list one file path per line.
@@ -99,7 +99,7 @@ namespace Prefect
             When using a {nameof(TemplateKind.HarpTech)} template, the `Interface` directory is used instead of the root.
 
         Exit code:
-            Prefect will exit with a non-zero exit code if any repository failed validaiton or if the specified repository set is effectively empty.
+            Prefect will exit with a non-zero exit code if any repository failed validation or if the specified repository set is effectively empty.
         """;
 
             WriteHelp(postHelpText);
