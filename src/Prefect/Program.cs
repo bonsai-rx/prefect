@@ -19,7 +19,7 @@ Argument<DirectoryInfo> templatePathArgument = ArgumentValidation.AcceptExisting
     new Argument<DirectoryInfo>("reference-template")
 {
     Description = "Required path to the reference template to use for validation. (See detailed description below.)",
-    Arity = ArgumentArity.ExactlyOne,
+    Arity = ArgumentArity.ExactlyOne
 });
 
 Argument<List<DirectoryInfo>> repoArguments = ArgumentValidation.AcceptExistingOnly(
