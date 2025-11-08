@@ -23,7 +23,7 @@ internal sealed class SubmoduleValidationRule : Rule
     /// <summary>Path => Repo Info pairs which must be present in the .gitmodules</summary>
     private List<(string repoSlug, string repoPath, string? expectedHeadRevision)> requiredSubmodules =
     [
-        ("bonsai-rx/docfx-tools", "docs/bonsai-docfx", "5b584cadc5f1e3088f4972469243df2e3faf6925"),
+        ("bonsai-rx/docfx-tools", "docs/bonsai-docfx", "d33401b473d647237d88b3eaa73b0dae3fc08ea7"),
     ];
 
     /// <summary>List of repo slugs which must not be present in the .gitmodules</summary>
@@ -204,3 +204,4 @@ internal sealed class SubmoduleValidationRule : Rule
         }
     }
 }
+
