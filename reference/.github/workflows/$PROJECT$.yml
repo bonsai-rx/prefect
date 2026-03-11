@@ -62,13 +62,13 @@ jobs:
     steps:
       # ----------------------------------------------------------------------- Checkout
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
       # ----------------------------------------------------------------------- Set up tools
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.x
 
@@ -100,7 +100,7 @@ jobs:
 
       # ----------------------------------------------------------------------- Collect artifacts
       - name: Collect NuGet packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: matrix.collect-packages && steps.pack.outcome == 'success' && always()
         with:
           name: Packages
@@ -120,13 +120,13 @@ jobs:
     steps:
       # ----------------------------------------------------------------------- Checkout
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
       # ----------------------------------------------------------------------- Set up tools
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.x
 
@@ -149,7 +149,7 @@ jobs:
 
       # ----------------------------------------------------------------------- Collect artifacts
       - name: Collect documentation metadata
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: steps.build-metadata.outcome == 'success' && always()
         with:
           name: DocumentationMetadata
@@ -157,7 +157,7 @@ jobs:
           path: artifacts/docs/api/
 
       - name: Collect documentation artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: steps.build-documentation.outcome == 'success' && always()
         with:
           name: DocumentationWebsite
@@ -180,13 +180,13 @@ jobs:
     steps:
       # ----------------------------------------------------------------------- Checkout
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
       # ----------------------------------------------------------------------- Download built packages
       - name: Download packages for rendering
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: Packages
           path: artifacts/packages/
@@ -205,7 +205,7 @@ jobs:
 
       # ----------------------------------------------------------------------- Collect artifacts
       - name: Collect images
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: steps.render.outcome == 'success' && always()
         with:
           name: DocumentationWorkflowImages
@@ -233,13 +233,13 @@ jobs:
     steps:
       # ----------------------------------------------------------------------- Set up .NET
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.x
 
       # ----------------------------------------------------------------------- Download built packages
       - name: Download built packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: Packages
           path: artifacts/packages/
@@ -275,13 +275,13 @@ jobs:
     steps:
       # ----------------------------------------------------------------------- Set up .NET
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.x
 
       # ----------------------------------------------------------------------- Download built packages
       - name: Download built packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: Packages
           path: artifacts/packages/
@@ -326,13 +326,13 @@ jobs:
       # It is intentional that we use two independent download steps here as it ensures that workflow images are permitted
       # to overwrite any conflicts in the docfx output but not the other way around.
       - name: Download documentation website
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: DocumentationWebsite
 
       - name: Download workflow images
         if: ${{needs.workflow-images.result == 'success'}}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: DocumentationWorkflowImages
 
