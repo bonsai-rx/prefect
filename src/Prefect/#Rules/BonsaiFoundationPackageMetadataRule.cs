@@ -59,21 +59,7 @@ internal sealed class BonsaiFoundationPackageMetadataRule : Rule
                 continue;
 
             string relativePath = Path.GetRelativePath(repo.RootPath, projectFilePath);
-
             XDocument xml = XDocument.Load(projectFilePath);
-
-            string bonsaiPrefix = "Bonsai - ";
-
-            //TODO: It might make more sense to actually just ignore both Title and Description for tools since
-            // I don't think either show up in any common place people use to interact with .NET tools
-            if (xml.XPathSelectElement("/Project/PropertyGroup/PackAsTool")?.Value == "true")
-                bonsaiPrefix = "Bonsai ";
-
-            if (repo.ProjectName != "Bonsai.ML") // Project is inconsistent in this regard.
-            {
-                if (xml.XPathSelectElement("/Project/PropertyGroup/Title")?.Value?.StartsWith(bonsaiPrefix) != true)
-                    errors.AppendLine($"'{relativePath}': Title should be in the form of '{bonsaiPrefix}Project Name'");
-            }
 
             // The description may not show up on NuGet.org anymore when a readme is present, but it's still shown in clients (including Bonsai)
             if (xml.XPathSelectElement("/Project/PropertyGroup/Description")?.Value is null or "")
