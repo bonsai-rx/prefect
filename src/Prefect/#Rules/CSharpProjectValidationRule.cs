@@ -78,7 +78,7 @@ internal sealed class CSharpProjectValidationRule : Rule
     [
         "net462",
         "net472",
-        //"net48", // Only Bonsai's bootstrapper should be using .NET 4.8
+        "net48",
         "netstandard2.0",
         "net8.0",
         "net8.0-windows",
