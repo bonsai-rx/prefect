@@ -3,6 +3,7 @@
 
 # Scripts
 *.cmd text eol=crlf
+*.sh text eol=lf
 *.ps1 text
 
 # Config
