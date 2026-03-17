@@ -42,5 +42,7 @@ docs/template/main.js
 .github/workflows/test.yml
 .github/workflows/dotnet.yml
 
-# The rules that used to live here are part of the main .gitignore now
-.bonsai/.gitibnore
+# Legacy bootstrapper files
+.bonsai/.gitignore
+.bonsai/Setup.cmd
+.bonsai/Setup.ps1
