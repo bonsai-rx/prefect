@@ -17,7 +17,7 @@ internal sealed class BonsaiLaunchSettingsJsonRule : Rule
           "profiles": {
             "Bonsai": {
               "commandName": "Executable",
-              "executablePath": "$(BonsaiExecutablePath)",
+              "executablePath": "bonsai",
               "commandLineArgs": "--lib:\"$(TargetDir).\"",
               "nativeDebugging": true
             }
