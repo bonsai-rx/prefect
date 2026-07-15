@@ -136,7 +136,7 @@ jobs:
       # ----------------------------------------------------------------------- Configure build
       - name: Configure build
         id: configure-build
-        uses: bonsai-rx/configure-build@v1
+        uses: bonsai-rx/configure-build@v2
 
       # ----------------------------------------------------------------------- Restore
       - name: Restore
