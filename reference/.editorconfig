@@ -4,13 +4,17 @@ root = true
 indent_style = space
 
 #--------------------------------------------------------------------------------------------------
-# XML, JSON, and web files
+# XML, JSON, YAML, and web files
 #--------------------------------------------------------------------------------------------------
 [*.{xml,csproj,vcxproj,vcxproj.filters,shproj,props,targets,config,nuspec,resx,vsixmanifest,wxs,vstemplate,slnx}]
 indent_size = 2
 
 [*.json]
 indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
+charset = utf-8
 
 [*.{html,css}]
 indent_size = 2
