@@ -17,7 +17,7 @@
       Disable warnings relating to missing documentation
       (It's actually too late to easily disable documentation file generation outright, Microsoft.NET.Sdk.BeforeCommon.targets already reacted to it being enabled.)
     -->
-    <NoWarn>1591,1573</NoWarn>
+    <NoWarn>$(NoWarn);CS1591;CS1573</NoWarn>
   </PropertyGroup>
 
   <Import Project="Project.csproj.targets" Condition="Exists('Project.csproj.targets')" />
@@ -34,7 +34,7 @@
     <Version Condition="'$(ContinuousIntegrationBuild)' == 'true'">$(CiBuildVersion)</Version>
   </PropertyGroup>
 
-  <Target Name="VersionSanityChecks" BeforeTargets="Build">
+  <Target Name="VersionSanityChecks" BeforeTargets="PrepareForBuild">
     <Error Condition="'$(ContinuousIntegrationBuild)' == 'true' and '$(CiBuildVersion)' == ''" Text="CI version info not configured." />
     <Error Condition="'$(PackageVersion)' != '' and '$(PackageVersion)' != '$(Version)'" Text="Do not manually specify PackageVersion." />
   </Target>
