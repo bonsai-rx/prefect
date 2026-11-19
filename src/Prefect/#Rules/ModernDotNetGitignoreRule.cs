@@ -13,6 +13,7 @@ internal sealed class ModernDotNetGitignoreRule : FileExistsRule
     private static readonly ImmutableSortedSet<string> RequiredPatterns =
     [
         @".vs/",
+        @"*.user",
         @"/artifacts/",
         // Bonsai environments
         @"**/.bonsai/Settings/",
